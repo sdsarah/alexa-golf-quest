@@ -1,0 +1,213 @@
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(to bottom right, #fdf2f8, #f0f9ff);
+    color: #374151;
+  }
+  .section {
+    max-width: 700px;
+    margin: 30px auto;
+    background: #ffffffee;
+    border-radius: 20px;
+    padding: 28px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+  }
+  h2 {
+    font-size: 1.75rem;
+    color: #9333ea;
+    margin-bottom: 20px;
+  }
+  label {
+    font-weight: 600;
+    color: #7c3aed;
+    margin-top: 10px;
+    display: block;
+  }
+  .input-group {
+    margin-bottom: 18px;
+  }
+  .input-group input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 6px;
+    border-radius: 10px;
+    border: 1px solid #d1d5db;
+    font-size: 1rem;
+  }
+  button {
+    width: 100%;
+    padding: 12px;
+    margin: 6px 0 16px 0;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    background: #c084fc;
+    color: white;
+    transition: background 0.3s;
+  }
+  button:hover {
+    background: #a855f7;
+  }
+  .store-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .store-button {
+    background: #ede9fe;
+    color: #6b21a8;
+    border: 1px solid #ddd6fe;
+    border-radius: 12px;
+    padding: 12px 16px;
+    font-size: 1rem;
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.2s;
+  }
+  .store-button:hover {
+    background: #e9d5ff;
+  }
+  .points-tag {
+    font-weight: bold;
+    color: #7e22ce;
+  }
+  .points-display {
+    max-width: 700px;
+    margin: 20px auto;
+    background: #e879f9;
+    color: white;
+    border-radius: 16px;
+    padding: 20px;
+    font-size: 1.6rem;
+    text-align: center;
+    font-weight: bold;
+  }
+</style>
+
+<div class="points-display">
+  🌟 Alexa's Points: <span id="points">0</span>
+</div>
+
+<div class="section">
+  <h2>🌸 Alexa's Personalized Practice Tracker</h2>
+
+  <div class="input-group">
+    <label for="holesPlayed">⛳ Number of Holes Played (10 pts per hole)</label>
+    <input type="number" id="holesPlayed" min="1" max="18" placeholder="Enter holes (1-18)" />
+    <button onclick="logHolesPlayed()">Log Holes Played</button>
+    <small style="display:block;color:#6b7280;font-weight:500;text-align:center;margin-top:-10px;">+10 pts per hole</small>
+  </div>
+
+  <div class="input-group">
+    <label for="puttingMinutes">🎯 Putting Practice - Minutes (5 pts per 10 min)</label>
+    <input type="number" id="puttingMinutes" min="0" placeholder="Enter minutes" />
+    <button onclick="logMinutesPractice('Putting Practice', 'puttingMinutes')">Log Putting Practice</button>
+    <small style="display:block;color:#6b7280;font-weight:500;text-align:center;margin-top:-10px;">+5 pts per 10 min</small>
+  </div>
+
+  <div class="input-group">
+    <label for="chippingMinutes">🪃 Chipping Practice - Minutes (5 pts per 10 min)</label>
+    <input type="number" id="chippingMinutes" min="0" placeholder="Enter minutes" />
+    <button onclick="logMinutesPractice('Chipping Practice', 'chippingMinutes')">Log Chipping Practice</button>
+    <small style="display:block;color:#6b7280;font-weight:500;text-align:center;margin-top:-10px;">+5 pts per 10 min</small>
+  </div>
+
+  <div class="input-group">
+    <label for="ballsHit">🏌️‍♀️ Driving Range - Balls Hit (5 pts per 20 balls)</label>
+    <input type="number" id="ballsHit" min="0" placeholder="Enter number of balls" />
+    <button onclick="logDrivingRange()">Log Driving Range</button>
+    <small style="display:block;color:#6b7280;font-weight:500;text-align:center;margin-top:-10px;">+5 pts per 20 balls</small>
+  </div>
+
+  <button onclick="addPoints('Lesson with Coach Dave', 10)">🎓 Lesson with Coach Dave (+10 pts)</button>
+  <button onclick="addPoints('Made a Birdie!', 10)">🐤 Made a Birdie! (+10 pts)</button>
+  <button onclick="addPoints('Practiced 3 Days in a Row!', 10)">🔥 Practiced 3 Days in a Row! (+10 pts)</button>
+  <button onclick="addPoints('Called Grandpa about Golf', 10)">📞 Called Grandpa about Golf (+10 pts)</button>
+
+  <button onclick="addPoints('Bonus: Practiced with Riley', 5)">👭 Bonus: Practiced with Riley (+5 pts)</button>
+  <button onclick="addPoints('Bonus: Practiced with a Friend', 5)">🧑‍🤝‍🧑 Bonus: Practiced with a Friend (+5 pts)</button>
+  <button onclick="addPoints('Bonus: Practiced Alone', 10)">🧘 Bonus: Practiced Alone (+10 pts)</button>
+</div>
+
+<div class="section">
+  <h2>🎁 Alexa's Reward Store</h2>
+  <ul class="store-list">
+    <li><button class="store-button" onclick="redeemStoreItem('Extra Screen Time', 50)">📱 Extra Screen Time <span class="points-tag">50 pts</span></button></li>
+    <li><button class="store-button" onclick="redeemStoreItem('Double Dessert', 100)">🍰 Double Dessert <span class="points-tag">100 pts</span></button></li>
+    <li><button class="store-button" onclick="redeemStoreItem('$5 Cash', 100)">💵 $5 Cash <span class="points-tag">100 pts</span></button></li>
+  </ul>
+</div>
+
+<script>
+let points = Number(localStorage.getItem('points')) || 0;
+let log = JSON.parse(localStorage.getItem('log')) || [];
+
+function updatePoints() {
+  document.getElementById('points').textContent = points;
+  localStorage.setItem('points', points);
+}
+
+function updateLog() {
+  localStorage.setItem('log', JSON.stringify(log));
+}
+
+function addPoints(activity, pts) {
+  points += pts;
+  alert(`+${pts} pts for: ${activity}`);
+  log.push({ date: new Date().toLocaleDateString(), activity, pts });
+  updatePoints();
+  updateLog();
+}
+
+function logHolesPlayed() {
+  const holes = Number(document.getElementById('holesPlayed').value);
+  if (holes > 0) {
+    const pts = holes * 10;
+    addPoints(`Played ${holes} hole${holes > 1 ? 's' : ''}`, pts);
+    document.getElementById('holesPlayed').value = '';
+  }
+}
+
+function logMinutesPractice(activity, inputId) {
+  const mins = Number(document.getElementById(inputId).value);
+  if (mins >= 10) {
+    const pts = Math.floor(mins / 10) * 5;
+    addPoints(`${activity} for ${mins} minutes`, pts);
+    document.getElementById(inputId).value = '';
+  } else {
+    alert("You need at least 10 minutes to earn points.");
+  }
+}
+
+function logDrivingRange() {
+  const balls = Number(document.getElementById('ballsHit').value);
+  if (balls >= 20) {
+    const pts = Math.floor(balls / 20) * 5;
+    addPoints(`Hit ${balls} balls at driving range`, pts);
+    document.getElementById('ballsHit').value = '';
+  } else {
+    alert("You need at least 20 balls to earn points.");
+  }
+}
+
+function redeemStoreItem(itemName, cost) {
+  if (points >= cost) {
+    points -= cost;
+    alert(`You redeemed: ${itemName}!`);
+    updatePoints();
+    log.push({ date: new Date().toLocaleDateString(), activity: `Redeemed: ${itemName}`, pts: -cost });
+    updateLog();
+  } else {
+    alert("Not enough points for this item!");
+  }
+}
+
+updatePoints();
+</script>
